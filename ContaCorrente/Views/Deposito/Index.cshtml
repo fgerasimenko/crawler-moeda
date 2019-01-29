@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Depósito";
+}
+
+<script type="text/javascript">
+    urlPath = '@Url.Content("~/Deposito/")';
+</script>
+<div class="row ">
+    <div class="col-md-offset-4 col-xs-offset-4">
+        <h1>Depositar na Conta-Corrente</h1>
+        <form class="form" action="#">
+            <div class="col-md-offset-1 col-xs-offset-1">
+                <div class="form-group">
+                    <label for="IdConta">ID da Conta</label>
+                    <input class="form-control" id="IdConta" placeholder="Ex. 123456" />
+                </div>
+                <div class="form-group">
+                    <label for="valorDeposito">Valor a ser depositado</label>
+                    <input class="form-control" id="valorDeposito" placeholder="Ex. R$ 120,00" />
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-xs-offset-2">
+                <button class="btn btn-default" onclick="Deposito()">Depositar</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+@section scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+    <script type="text/javascript">
+        function Deposito() {
+            var deposito = {
+                Conta: {
+                    Codigo: 0,
+                    Id: $("#IdConta").val(),
+                    Saldo: 0
+                },
+                Quantia: $("#valorDeposito").val()
+
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: urlPath + "Deposito",
+                dataType: "json",
+                data: deposito,
+                async: true,
+                success: function (data) {
+                    alert(data.message);
+                },
+                error: function (error, data) {
+                    alert(data.message);
+                }
+            })
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#IdConta").mask('0#');
+            $("#valorDeposito").mask("#.##0,00", { reverse: true });
+        })
+    </script>
+}
+
+
