@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Cadastrar";
+}
+<script type="text/javascript">
+    urlContaPath = '@Url.Content("~/Conta/")';
+</script>
+<div class="row ">
+
+    <div class="col-md-offset-4 col-xs-offset-4">
+        <h1>Cadastrar Conta-Corrente</h1>
+        <form class="form" action="#">
+            <div class="col-md-offset-1 col-xs-offset-1">
+                <div class="form-group">
+                    <label for="IdConta">ID da Conta</label>
+                    <input class="form-control" id="IdConta" placeholder="Ex. 123456" required />
+                </div>
+                <div class="form-group">
+                    <label for="valorInicial">Valor Inicial</label>
+                    <input class="form-control" id="valorInicial" placeholder="Ex. R$ 120,00" min="0" required />
+                </div>
+            </div>
+            <div class="col-md-offset-2 col-xs-offset-2">
+                <button class="btn btn-default" onclick="Registro()">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+@section scripts{
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+    <script type="text/javascript">
+        function Registro() {
+            console.log("teste");
+            var conta = {
+                Codigo: 0,
+                Id: $("#IdConta").val(),
+                Saldo: $("#valorInicial").val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: urlContaPath + "Registro",
+                dataType: "json",
+                data: conta,
+                async: true,
+                success: function (data) {
+                    alert(data.message);
+                },
+                error: function (error, data) {
+                    console.log(error);
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#IdConta").mask('0#');
+            $("#valorInicial").mask("#.##0,00", { reverse: true });
+        })
+    </script>
+
+}
+

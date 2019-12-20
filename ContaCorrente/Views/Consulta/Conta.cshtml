@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Conta";
+}
+
+
+<script type="text/javascript">
+    urlConsultaPath = '@Url.Content("~/Consulta/")';
+</script>
+<div class="row ">
+    <div class="col-md-5 col-xs-5">
+        <h1>Meu Saldo é: <span id="saldo">R$ @ViewBag.Conta.Saldo</span></h1>
+        <button class="btn btn-info" aria-controls="collapseExample" aria-expanded="true" data-target="#collapseExample" data-toggle="collapse" type="button" onclick="GetConversao()">Saldo em Dólares</button>
+    </div>
+</div>
+<br />
+
+<div class="collapse" id="collapseExample" aria-expanded="true" style=""> 
+    <div id="convert" class="well"> 
+        <h1>Meu saldo em dólares é: U$ <span id="dolar">0</span></h1> 
+    </div> 
+</div> 
+
+<br />
+<div class="row">
+    <div class="col-lg-1">
+        <a class="btn btn-default" href="/Deposito/">Depositar</a>
+    </div>
+    <div class="col-lg-1">
+        <a class="btn btn-default" href="/Saque">Sacar</a>
+    </div>
+</div>
+<script>
+        function GetConversao() {
+            var saldo = "@(ViewBag.Conta.Saldo)";
+            //saldo = saldo.replace(",", ".");
+
+            //saldo = parseFloat(saldo);
+            $.ajax({
+                type: 'POST',
+                url: urlConsultaPath + "Converter",
+                data: { quantia: saldo },
+                async: true,
+                success: function (data) {
+                    $('#dolar').text(parseFloat(data).toFixed(2));
+                },
+                error: function (error, data) {
+                    console.log(error);
+                }
+            })
+        }
+</script>
